@@ -3,32 +3,35 @@ import React, {useState} from 'react';
 import {View, Text, Animated, TouchableOpacity} from 'react-native';
 
 const App = () => {
-  const value = useState(new Animated.ValueXY({x: 0, y: 0}))[0];
-  console.log('DEBUG: - file: App.js - line 7 - App - value', value);
+  const leftValue = useState(new Animated.Value(0))[0];
+  console.log('DEBUG: - file: App.js - line 7 - App - leftValue', leftValue);
 
   function moveBall() {
-    Animated.timing(value, {
-      toValue: {x: 100, y: 100},
+    Animated.timing(leftValue, {
+      toValue: 1000,
       duration: 1000,
       useNativeDriver: false,
     }).start();
   }
 
   return (
-    <View>
-      <Animated.View style={value.getLayout()}>
-        <View
-          style={{
-            width: 100,
-            height: 100,
-            borderRadius: 100 / 2,
-            backgroundColor: 'red',
-          }}
+    <View style={{flex: 1}}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Animated.View
+          style={[
+            {
+              width: 100,
+              height: 100,
+              marginLeft: leftValue,
+              borderRadius: 100 / 2,
+              backgroundColor: 'red',
+            },
+          ]}
         />
-      </Animated.View>
-      <TouchableOpacity onPress={moveBall}>
-        <Text>clicked me</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={moveBall}>
+          <Text>Move Me</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
