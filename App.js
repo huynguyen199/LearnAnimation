@@ -10,28 +10,29 @@ import {
 
 const App = () => {
   const pan = useState(new Animated.ValueXY())[0];
-
   const panResponder = useState(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: () => {
-        console.log(
-          'DEBUG: - file: App.js - line 18 - App - onPanResponderGrant',
-        );
-
         pan.setOffset({
           x: pan.x._value,
           y: pan.y._value,
         });
       },
-      onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}]),
+      onPanResponderMove: (_, gesture) => {
+        // console.log('args', args[1]);
+        pan.x.setValue(gesture.dx);
+        pan.y.setValue(gesture.dy);
+      },
       onPanResponderRelease: () => {
+        console.log({...pan.x}, 'before');
         pan.flattenOffset();
+        console.log({...pan.x}, 'after');
       },
     }),
   )[0];
 
-  console.log(panResponder.panHandlers);
+  console.log('test2', pan.getTranslateTransform());
 
   return (
     <View style={{flex: 1}}>
@@ -42,6 +43,14 @@ const App = () => {
             height: 100,
             borderRadius: 100 / 2,
             backgroundColor: 'red',
+            transform: [
+              {
+                translateX: pan.x,
+              },
+              {
+                translateY: pan.y,
+              },
+            ],
           },
           pan.getLayout(),
         ]}
