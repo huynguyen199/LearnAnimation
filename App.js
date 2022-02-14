@@ -3,14 +3,20 @@ import React, {useState} from 'react';
 import {View, Text, Animated, TouchableOpacity} from 'react-native';
 
 const App = () => {
-  const leftValue = useState(new Animated.Value(0))[0];
-  console.log('DEBUG: - file: App.js - line 7 - App - leftValue', leftValue);
+  const opacity = useState(new Animated.Value(0))[0];
 
-  function moveBall() {
-    Animated.timing(leftValue, {
-      toValue: 1000,
+  function fadeInBall() {
+    Animated.timing(opacity, {
+      toValue: 1,
       duration: 1000,
-      useNativeDriver: false,
+      useNativeDriver: true,
+    }).start();
+  }
+  function fadeOutBall() {
+    Animated.timing(opacity, {
+      toValue: 0,
+      duration: 1000,
+      useNativeDriver: true,
     }).start();
   }
 
@@ -22,14 +28,17 @@ const App = () => {
             {
               width: 100,
               height: 100,
-              marginLeft: leftValue,
+              opacity,
               borderRadius: 100 / 2,
               backgroundColor: 'red',
             },
           ]}
         />
-        <TouchableOpacity onPress={moveBall}>
-          <Text>Move Me</Text>
+        <TouchableOpacity onPress={fadeInBall}>
+          <Text>Fade in</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={fadeOutBall}>
+          <Text>Fade out</Text>
         </TouchableOpacity>
       </View>
     </View>
